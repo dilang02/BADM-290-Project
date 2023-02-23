@@ -25,10 +25,10 @@ for (i in 8:9){ # Create histograms and report summary data for demographic data
   show(summary(dg_data[,i]))
 }
 
-hist(data.m_opt[,2]-data.m_opt[,1],breaks=25,main="Experiment 1: Bivariate Difference") # Visualize experiment hypotheses
-show(t.test(data.m_opt[,1],data.m_opt[,2],paired=TRUE,alternative="less")) # Report statistical analyses of hypotheses
-hist(data.m_opt[,4]-data.m_opt[,3],breaks=25,main="Experiment 2: Bivariate Difference")
-show(t.test(data.m_opt[,3],data.m_opt[,4],paired=TRUE,alternative="two.sided"))
+hist(dg_data[,5]-dg_data[,4],breaks=25,main="Experiment 1: Bivariate Difference") # Visualize experiment hypotheses
+show(t.test(dg_data[,5],dg_data[,4],paired=TRUE,alternative="two.sided")) # Report statistical analyses of hypotheses
+hist(dg_data[,7]-dg_data[,6],breaks=25,main="Experiment 2: Bivariate Difference")
+show(t.test(dg_data[,7],dg_data[,6],paired=TRUE,alternative="two.sided"))
 
 w_sim <- c() # Optimizing corrective transformation for Shapiro-Wilk testing
 for (i in 1:9){
