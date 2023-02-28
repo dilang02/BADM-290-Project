@@ -1,18 +1,17 @@
 rm(list=ls())
 graphics.off() # Clear workspace and import datasets
 library(readxl)
-data <- read_excel("D:/My Drive/Spring 2023 Semester/BADM-290  Global Business Experience/MTurk Finca Flichman Results.xlsx",sheet = "Experiments")
-#View(data)
-dg_data <- read_excel("D:/My Drive/Spring 2023 Semester/BADM-290  Global Business Experience/MTurk Finca Flichman Results.xlsx", 
-sheet = "Analysis", range = "G1:O102")
-data.m <- as.matrix(data) # Transform database into numeric matrix
-dg_data <- as.matrix(dg_data)
-data.m_opt <- data.m[-101,] # Omit outlier and NA data points
-na.omit(data.m_opt)
-for (i in 1:4) { # Create histograms and report summary data for experimental data
-  hist(data.m_opt[,i],breaks=25)
-  cat("Model",i,":\n")
-  show(summary(data.m_opt[,i]))
+dg_data <- read_excel("D:/My Drive/Spring 2023 Semester/BADM-290  Global Business Experience/EMBA Finca Flichman Results.xlsx", 
+                      sheet = "Analysis", range = "F1:N40")
+dg_data <- as.matrix(dg_data) # Transform database into numeric matrix
+for (i in 1:3){
+  cat("Variable",i,":\n")
+  show(summary(dg_data[,i]))
+}
+for (i in 4:7) { # Create histograms and report summary data for experimental data
+  hist(dg_data[,i],breaks=25)
+  cat("Model",i-3,":\n")
+  show(summary(dg_data[,i]))
 }
 for (i in 8:9){ # Create histograms and report summary data for demographic data
   if (i == 8){
@@ -27,9 +26,9 @@ for (i in 8:9){ # Create histograms and report summary data for demographic data
 }
 
 hist(dg_data[,5]-dg_data[,4],breaks=25,main="Experiment 1: Bivariate Difference") # Visualize experiment hypotheses
-show(t.test(dg_data[,5],dg_data[,4],paired=TRUE,alternative="two.sided")) # Report statistical analyses of hypotheses
+show(t.test(dg_data[,5],dg_data[,4],paired=TRUE,alternative="greater")) # Report statistical analyses of hypotheses
 hist(dg_data[,7]-dg_data[,6],breaks=25,main="Experiment 2: Bivariate Difference")
-show(t.test(dg_data[,7],dg_data[,6],paired=TRUE,alternative="two.sided"))
+show(t.test(dg_data[,7],dg_data[,6],paired=TRUE,alternative="greater"))
 
 w_sim <- c() # Optimizing corrective transformation for Shapiro-Wilk testing
 for (i in 1:9){
@@ -49,10 +48,6 @@ for (i in 1:9){
 hist(dg_data[,1],breaks=25) # Create histograms for consumer data
 hist(dg_data[,2])
 hist(dg_data[,3],breaks=25)
-for (i in 1:3){
-  cat("Variable",i,":\n")
-  show(summary(dg_data[,i]))
-}
 
 p_results <- c() # Determine which interactions are significant
 for (i in 1:9){
@@ -62,7 +57,6 @@ for (i in 1:9){
 }
 p_matrix <- matrix(p_results,9,9)
 round(p_matrix,2)
-
 sig_test <- p_matrix < 0.05
 sig_test
 
@@ -88,7 +82,7 @@ for (i in 1:9){ # Normalize residuals and optimize regression through polynomial
         #plot(lm(y_max~dg_data[,j]),which=1)
         show(summary(lm(y_max~dg_data[,i])))
       }
-
+      
     }
   }
 }
